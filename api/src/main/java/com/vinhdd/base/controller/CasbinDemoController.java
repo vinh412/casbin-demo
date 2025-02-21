@@ -26,7 +26,7 @@ public class CasbinDemoController {
 
     @PostMapping("/resource")
     public ResponseEntity<Boolean> addResource(@RequestBody AddResourceDto dto) {
-        return ResponseEntity.ok(casbinDemoService.addFolder(dto.getName(), dto.getParent()));
+        return ResponseEntity.ok(casbinDemoService.addResource(dto.getName(), dto.getParent()));
     }
 
     @PostMapping("/user-group")

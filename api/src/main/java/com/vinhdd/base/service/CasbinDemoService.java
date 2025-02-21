@@ -1,13 +1,16 @@
 package com.vinhdd.base.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.casbin.jcasbin.main.Enforcer;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CasbinDemoService {
@@ -21,7 +24,7 @@ public class CasbinDemoService {
         return enforcer.addPolicy(sub, obj, role);
     }
 
-    public boolean addFolder(String name, String parent){
+    public boolean addResource(String name, String parent){
         return enforcer.addNamedGroupingPolicy("g2", name, parent);
     }
 
@@ -48,5 +51,11 @@ public class CasbinDemoService {
         List<Map<String, Object>> childrenTree = children.stream().map(child -> getTree(ptype, child)).toList();
         tree.put("children", childrenTree);
         return tree;
+    }
+
+    @Scheduled(fixedDelay = 3000L)
+    public void loadPolicy(){
+        log.info("Loading policy");
+        enforcer.loadPolicy();
     }
 }
